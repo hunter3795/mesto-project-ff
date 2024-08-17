@@ -55,7 +55,6 @@ function handleImageFormSubmit(evt) {
   newCard.name = cardNameInp.value;
   cardContainer.prepend(addCards(newCard, removeCard, handleLikeButton, handleImagePopup));
   evt.target.reset();
-  evt.target.addEventListener('submit', () => closePopup(popupEdit))
+  evt.target.addEventListener('submit', () => closePopup(popupAddCard))
 }
 formPlace.addEventListener('submit', handleImageFormSubmit);
-formPlace.addEventListener('submit', () => closePopup(popupAddCard))
