@@ -1,6 +1,3 @@
-import { initialCards } from "./cards.js";
-import { handleImagePopup } from "../index.js";
-
 const cardContainer = document.querySelector(".places__list");
 
 function addCards(item, removeCard, handleLikeButton, handleImagePopup) {
@@ -22,8 +19,8 @@ function addCards(item, removeCard, handleLikeButton, handleImagePopup) {
     handleLikeButton(likeButton);
   });
 
-  cardImage.addEventListener("click", function () {
-    handleImagePopup(cardImage);
+  cardImage.addEventListener("click", function () { 
+    handleImagePopup(cardImage); 
   });
 
   return cardElement;
@@ -38,13 +35,4 @@ function handleLikeButton(but) {
   but.classList.toggle("card__like-button_is-active");
 }
 
-// @todo: Вывести карточки на страницу
-function cards() {
-  initialCards.forEach(function (elem) {
-    cardContainer.append(
-      addCards(elem, removeCard, handleLikeButton, handleImagePopup)
-    );
-  });
-}
-
-export { addCards, cards, removeCard, handleLikeButton, cardContainer };
+export { addCards, removeCard, handleLikeButton, cardContainer };

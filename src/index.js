@@ -1,53 +1,61 @@
 import '../src/index.css';
-import { addCards, cards, removeCard, handleLikeButton, cardContainer } from './components/card.js'
-import { openPopup } from './components/modal.js'
+import { initialCards } from "./components/cards.js";
+import { addCards, removeCard, handleLikeButton, cardContainer, cardImage } from './components/card.js'
+import { openPopup, closePopup } from './components/modal.js'
 
 const profEdBut = document.querySelector('.profile__edit-button');
 const popupEdit = document.querySelector('.popup_type_edit');
 const profAddBut = document.querySelector('.profile__add-button');
 const popupAddCard = document.querySelector('.popup_type_new-card');
-const formElement = document.querySelector('.popup__form')
+const profileForm = document.querySelector('.popup__form')
 const nameInput = document.querySelector('.popup__input_type_name')
 const jobInput = document.querySelector('.popup__input_type_description')
-const ProfName = document.querySelector('.profile__title');
-const ProfDesc = document.querySelector('.profile__description');
+const profName = document.querySelector('.profile__title');
+const profDesc = document.querySelector('.profile__description');
 const cardNameInp = document.querySelector('.popup__input_type_card-name')
 const cardUrlInp = document.querySelector('.popup__input_type_url')
+const popImage = document.querySelector('.popup_type_image')
+const imagePopup = document.querySelector('.popup__image');
+const textImagePopup = document.querySelector('.popup__caption');
+const formPlace = document.forms.place;
 
-cards();
+function renderCards() {
+  initialCards.forEach(function (elem) {
+    cardContainer.append(
+      addCards(elem, removeCard, handleLikeButton, handleImagePopup)
+    );
+  });
+}
+renderCards();
 
-export function handleImagePopup(cardEl) {
-  const popImage = document.querySelector('.popup_type_image')
-  const imagePopup = document.querySelector('.popup__image');
-  const textImagePopup = document.querySelector('.popup__caption')
+function handleImagePopup(cardEl) {
   imagePopup.src = cardEl.src;
+  imagePopup.alt = cardEl.alt;
   textImagePopup.textContent = cardEl.alt;
   openPopup(popImage);
 }
 
-profEdBut.addEventListener('click', () => openPopup(popupEdit))
-profAddBut.addEventListener('click', () => openPopup(popupAddCard))
+nameInput.value = profName.textContent;
+jobInput.value = profDesc.textContent;
+profEdBut.addEventListener('click', () => openPopup(popupEdit));
+profAddBut.addEventListener('click', () => openPopup(popupAddCard));
 
-nameInput.value = ProfName.textContent;
-jobInput.value = ProfDesc.textContent
-
-function handleFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  ProfName.textContent = nameInput.value;
-  ProfDesc.textContent = jobInput.value;
+  profName.textContent = nameInput.value;
+  profDesc.textContent = jobInput.value;
+  evt.target.addEventListener('submit', () => closePopup(popupEdit));
 }
+profileForm.addEventListener('submit', handleProfileFormSubmit);
 
-formElement.addEventListener('submit', handleFormSubmit);
-
-function ImageFormSubmit(evt) {
+function handleImageFormSubmit(evt) {
   evt.preventDefault();
   const newCard = {};
   newCard.link = cardUrlInp.value;
   newCard.name = cardNameInp.value;
-
   cardContainer.prepend(addCards(newCard, removeCard, handleLikeButton, handleImagePopup));
   evt.target.reset();
+  evt.target.addEventListener('submit', () => closePopup(popupEdit))
 }
-
-const formPlace = document.forms.place;
-formPlace.addEventListener('submit', ImageFormSubmit); 
+formPlace.addEventListener('submit', handleImageFormSubmit);
+formPlace.addEventListener('submit', () => closePopup(popupAddCard))
