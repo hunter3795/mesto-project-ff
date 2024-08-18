@@ -1,7 +1,7 @@
 import '../src/index.css';
 import { initialCards } from "./components/cards.js";
 import { addCards, removeCard, handleLikeButton, cardContainer, cardImage } from './components/card.js'
-import { openPopup, closePopup } from './components/modal.js'
+import { openPopup, closePopup, handleClickMouse } from './components/modal.js'
 
 const profEdBut = document.querySelector('.profile__edit-button');
 const popupEdit = document.querySelector('.popup_type_edit');
@@ -35,16 +35,21 @@ function handleImagePopup(cardEl) {
   openPopup(popImage);
 }
 
-nameInput.value = profName.textContent;
-jobInput.value = profDesc.textContent;
-profEdBut.addEventListener('click', () => openPopup(popupEdit));
+handleClickMouse();
+
+
+profEdBut.addEventListener('click', () => {
+  nameInput.value = profName.textContent;
+  jobInput.value = profDesc.textContent;
+  openPopup(popupEdit)
+});
 profAddBut.addEventListener('click', () => openPopup(popupAddCard));
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profName.textContent = nameInput.value;
   profDesc.textContent = jobInput.value;
-  evt.target.addEventListener('submit', () => closePopup(popupEdit));
+  closePopup(popupEdit);
 }
 profileForm.addEventListener('submit', handleProfileFormSubmit);
 
@@ -55,6 +60,6 @@ function handleImageFormSubmit(evt) {
   newCard.name = cardNameInp.value;
   cardContainer.prepend(addCards(newCard, removeCard, handleLikeButton, handleImagePopup));
   evt.target.reset();
-  evt.target.addEventListener('submit', () => closePopup(popupAddCard))
+  closePopup(popupAddCard);
 }
 formPlace.addEventListener('submit', handleImageFormSubmit);
