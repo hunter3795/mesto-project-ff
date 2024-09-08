@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode production",
-    "dev": "webpack serve"
+    "dev": "webpack serve",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +27,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "core-js": "^3.38.0"
+    "core-js": "^3.38.0",
+    "gh-pages": "^6.1.1"
   }
 }

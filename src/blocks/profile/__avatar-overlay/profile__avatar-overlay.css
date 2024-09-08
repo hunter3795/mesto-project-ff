@@ -1,0 +1,7 @@
+.profile__avatar-overlay {
+  position: absolute;
+  background-color: rgb(0, 0, 0);
+  inset: 0;
+  opacity: 0;
+  transition: .3s
+}

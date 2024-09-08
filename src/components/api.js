@@ -118,12 +118,12 @@ export const delHandleLike = (cardId) => {
 }
 
 
-export const patchAvatar = (avatar) => {
+export const patchAvatar = (avatarInp) => {
   return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({
-      avatar: avatar.value
+      avatar: avatarInp.value
     })
   })
   

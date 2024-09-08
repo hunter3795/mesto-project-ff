@@ -1,0 +1,24 @@
+.profile__avatar-button {
+  position: absolute;
+  opacity: 0;
+  z-index: 1;
+  top: 3em;
+  left: 3em;
+  block-size: 26px;
+  inline-size: 26px;
+  background: url(/src/images/Vector.svg) center no-repeat;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: .3s
+}
+
+.profile__avatar-button:focus-visible,
+.profile__image:hover .profile__avatar-button {
+  opacity: 1;
+}
+
+.profile__avatar-button:focus-visible + .profile__avatar-overlay,
+.profile__image:hover .profile__avatar-overlay{
+  opacity: 0.8;
+}

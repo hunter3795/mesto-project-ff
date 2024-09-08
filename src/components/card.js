@@ -1,4 +1,3 @@
-
 const cardContainer = document.querySelector(".places__list");
 function addCards(item, removeCard, handleLikeButton, handleImagePopup, deleteCard, putHandleLike, delHandleLike) {
   const cardTemplate = document.querySelector("#card-template").content;
@@ -18,29 +17,27 @@ function addCards(item, removeCard, handleLikeButton, handleImagePopup, deleteCa
     removeButton.remove()
   }
 
-
-
   removeButton.addEventListener("click", function () {
     deleteCard(item._id)
       .catch((err) => {
         console.log(err)
       });
     removeCard(cardElement)
-
   })
 
-  const likeStatus = item.likes.find((elem) => elem._id === usedID) 
-
+  const likeStatus = item.likes.find((elem) => elem._id === usedID)
   if (likeStatus) {
     likeButton.classList.add("card__like-button_is-active")
   }
 
   likeButton.addEventListener("click", function () {
-    if (!likeStatus) {
+
+    if (!(item.likes.find((elem) => elem._id === usedID))) {
       putHandleLike(item._id)
         .then((data) => {
           handleLikeButton(likeButton)
-          likeAmount.textContent = data.likes.length
+          item.likes = data.likes
+          likeAmount.textContent = data.likes.length;
         })
         .catch((err) => {
           console.log(err)
@@ -51,6 +48,7 @@ function addCards(item, removeCard, handleLikeButton, handleImagePopup, deleteCa
       delHandleLike(item._id)
         .then((data) => {
           handleLikeButton(likeButton)
+          item.likes = data.likes
           likeAmount.textContent = data.likes.length
         })
         .catch((err) => {
@@ -58,9 +56,6 @@ function addCards(item, removeCard, handleLikeButton, handleImagePopup, deleteCa
         });
     }
   });
-
-
-
 
   cardImage.addEventListener("click", () =>
     handleImagePopup(cardImage)
@@ -72,7 +67,6 @@ function addCards(item, removeCard, handleLikeButton, handleImagePopup, deleteCa
 function removeCard(cardElement) {
   cardElement.remove()
 }
-
 
 function handleLikeButton(but) {
   but.classList.toggle("card__like-button_is-active");

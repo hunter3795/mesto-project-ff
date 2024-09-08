@@ -1,0 +1,12 @@
+.popup__input_error {
+  color: rgba(255, 0, 0, 1);
+  font-size: 12px;
+  position: absolute;
+  opacity: 0;
+  display: block;
+  top: 141px;
+}
+
+.popup__input_error:nth-of-type(2) {
+  top: 200px;
+}

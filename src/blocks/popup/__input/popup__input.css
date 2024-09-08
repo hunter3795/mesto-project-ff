@@ -21,22 +21,4 @@
   }
 }
 
-.popup__input_error {
-  color: rgba(255, 0, 0, 1);
-  font-size: 12px;
-  position: absolute;
-  opacity: 0;
-  display: block;
-  top: 141px;
-}
 
-.popup__input_error:last-of-type {
-  top: 200px;
-}
-.popup__input_type_error {
-  border-bottom: 1px solid rgba(255, 0, 0, 1);
-}
-
-.popup__error_visible {
-  opacity: 1;
-}
