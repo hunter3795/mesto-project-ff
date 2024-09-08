@@ -54,9 +54,11 @@ function hasInvalidInput(inputList) {
 function toggleButtonState(inputList, buttonElement, сonfig) {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(сonfig.inactiveButtonClass) //'popup__button_disabled'
+    buttonElement.disabled = true;
   }
   else {
     buttonElement.classList.remove(сonfig.inactiveButtonClass) //'popup__button_disabled'
+    buttonElement.disabled = false;
   }
 }
 
@@ -77,12 +79,10 @@ export function enableValidation(сonfig) {
 };
 
 export function clearValidation(formElement, сonfig) {
-  const errorItems = Array.from(formElement.querySelectorAll(`.${сonfig.errorClass}`));
-  const InputItems = Array.from(formElement.querySelectorAll(`.${сonfig.inputErrorClass}`));
+  const inputItems = Array.from(formElement.querySelectorAll(`.${сonfig.inputErrorClass}`));
   const button = formElement.querySelector(сonfig.submitButtonSelector)
-  errorItems.forEach((errorItem) =>
-    errorItem.classList.remove(сonfig.errorClass))
-  InputItems.forEach((InputItem) =>
-    InputItem.classList.remove(сonfig.inputErrorClass))
+  inputItems.forEach((inputItem) =>
+    hideInputError(formElement, inputItem, сonfig))
+  
   button.classList.add(сonfig.inactiveButtonClass)
 }

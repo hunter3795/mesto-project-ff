@@ -1,6 +1,6 @@
 import '../src/index.css';
 import { initialCards } from "./components/cards.js";
-import { addCards, removeCard, handleLikeButton, cardContainer } from './components/card.js'
+import { createCard, removeCard, handleLikeButton, cardContainer } from './components/card.js'
 import { openPopup, closePopup, handleClickMouse } from './components/modal.js'
 import { enableValidation, clearValidation } from './components/validation.js'
 import { getInitialCards, getInitialUsersMe, patchUsersMe, postCards, deleteCard, putHandleLike, delHandleLike, patchAvatar } from './components/api.js'
@@ -35,6 +35,7 @@ const validationConfig = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
 }
+let userId;
 
 // function renderCards() {
 //   initialCards.forEach(function (elem) {
@@ -76,7 +77,7 @@ profAvatarBut.addEventListener('click', function() {
 
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
-  renderLoading (true)
+  renderLoading (true, formAvatar)
   patchAvatar(avatarInput)
     .then((data) => {
     profImage.style.backgroundImage = "url('" + data.avatar + "')"
@@ -84,7 +85,7 @@ function handleAvatarFormSubmit(evt) {
     .catch((err) => {
       console.log(err);
     })
-    .finally(() => renderLoading (false))
+    .finally(() => renderLoading (false, formAvatar))
   closePopup(popupAvatar);
 }
 formAvatar.addEventListener('submit', handleAvatarFormSubmit)
@@ -93,7 +94,7 @@ function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profName.textContent = nameInput.value;
   profDesc.textContent = jobInput.value;
-  renderLoading (true)
+  renderLoading (true, profileForm)
   patchUsersMe(nameInput, jobInput)
     .then((data) => {
       profName.textContent = data.name
@@ -102,7 +103,7 @@ function handleProfileFormSubmit(evt) {
     .catch((err) => {
       console.log(err);
     })
-    .finally(() => renderLoading (false))
+    .finally(() => renderLoading (false, profileForm))
   closePopup(popupEdit);
 }
 profileForm.addEventListener('submit', handleProfileFormSubmit);
@@ -110,17 +111,17 @@ profileForm.addEventListener('submit', handleProfileFormSubmit);
 function handleImageFormSubmit(evt) {
   evt.preventDefault();
   const newCard = {};
-  renderLoading (true);
+  renderLoading (true, formPlace);
   postCards(cardNameInp, cardUrlInp)
     .then((data) => {
       newCard.link = data.link;
       newCard.name = data.name;
-      cardContainer.prepend(addCards(data, removeCard, handleLikeButton, handleImagePopup, deleteCard, putHandleLike, delHandleLike));
+      cardContainer.prepend(createCard(data, userId, removeCard, handleLikeButton, handleImagePopup, deleteCard, handleLike));
     })
     .catch((err) => {
       console.log(err);
     })
-    .finally(() => renderLoading (false))
+    .finally(() => renderLoading (false, formPlace))
   closePopup(popupAddCard);
 }
 formPlace.addEventListener('submit', handleImageFormSubmit);
@@ -128,13 +129,14 @@ formPlace.addEventListener('submit', handleImageFormSubmit);
 enableValidation(validationConfig);
 
 Promise.all([getInitialUsersMe(), getInitialCards()])
-  .then((data) => {
-    profName.textContent = data[0].name;
-    profDesc.textContent = data[0].about;
-    profImage.style.backgroundImage = "url('" + data[0].avatar + "')"
-    data[1].forEach((elem) => 
+  .then(([userData, cards]) => {
+    profName.textContent = userData.name;
+    userId = userData._id
+    profDesc.textContent = userData.about;
+    profImage.style.backgroundImage = "url('" + userData.avatar + "')"
+    cards.forEach((elem) => 
       cardContainer.append(
-        addCards(elem, removeCard, handleLikeButton, handleImagePopup, deleteCard, putHandleLike, delHandleLike)
+        createCard(elem, userId, removeCard, handleLikeButton, handleImagePopup, deleteCard, handleLike)
       )
     );
   })
@@ -142,14 +144,18 @@ Promise.all([getInitialUsersMe(), getInitialCards()])
     console.log(err);
   });
 
-function renderLoading (isLoading) {
-  const buttons = document.querySelectorAll('.popup__button');
-    buttons.forEach(button => {
-      if (isLoading) {
-        button.textContent  = 'Сохранение...'
-      }
-      else {
-        button.textContent  = 'Сохранить'
-      }
-    })
+function renderLoading (isLoading, form) {
+  const button = form.querySelector('.popup__button');
+  button.textContent  = isLoading ? 'Сохранение...' : 'Сохранить'
+}
+
+function handleLike (item, button, likeAmount) {
+  const likeMethod = item.likes.some((elem) => elem._id === userId) ? delHandleLike : putHandleLike;
+    likeMethod(item._id) 
+          .then((data) => {
+            handleLikeButton(button) 
+            item.likes = data.likes 
+            likeAmount.textContent = data.likes.length;
+          })
+          .catch(err => console.log(err));
 }

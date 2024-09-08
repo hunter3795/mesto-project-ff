@@ -6,32 +6,25 @@ const config = {
   }
 }
 
+const handleResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 export const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(handleResponse);
 } 
 
 export const getInitialUsersMe = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(handleResponse);
 } 
 export const patchUsersMe = (nameItem, jobItem) => {
   return fetch(`${config.baseUrl}/users/me`, {
@@ -43,13 +36,7 @@ export const patchUsersMe = (nameItem, jobItem) => {
     })
   })
   
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(handleResponse);
 }
 
 export const postCards = (NameInp, UrlInp) => {
@@ -61,14 +48,7 @@ export const postCards = (NameInp, UrlInp) => {
       link: UrlInp.value,
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(handleResponse);
 } 
 
 export const deleteCard = (cardId ) => {
@@ -76,14 +56,7 @@ export const deleteCard = (cardId ) => {
     method: 'DELETE',
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(handleResponse);
 }
 
 
@@ -92,14 +65,7 @@ export const putHandleLike = (cardId) => {
     method: 'PUT',
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(handleResponse);
 }
 
 export const delHandleLike = (cardId) => {
@@ -107,14 +73,7 @@ export const delHandleLike = (cardId) => {
     method: 'DELETE',
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(handleResponse);
 }
 
 
@@ -126,12 +85,5 @@ export const patchAvatar = (avatarInp) => {
       avatar: avatarInp.value
     })
   })
-  
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then(handleResponse);
 }

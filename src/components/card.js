@@ -1,61 +1,39 @@
 const cardContainer = document.querySelector(".places__list");
-function addCards(item, removeCard, handleLikeButton, handleImagePopup, deleteCard, putHandleLike, delHandleLike) {
+function createCard(item, userId, removeCard, handleLikeButton, handleImagePopup, deleteCard, handleLike) {
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const removeButton = cardElement.querySelector(".card__delete-button");
   const likeButton = cardElement.querySelector(".card__like-button");
   const likeAmount = cardElement.querySelector('.card__like-amount')
   const cardImage = cardElement.querySelector(".card__image");
-  const usedID = 'd548e16a0e411b39334bcb5c'
 
   cardElement.querySelector(".card__title").textContent = item.name;
   cardImage.src = item.link;
   cardImage.alt = item.name;
   likeAmount.textContent = item.likes.length;
 
-  if (item.owner._id !== usedID) {
+  if (item.owner._id !== userId) {
     removeButton.remove()
   }
 
-  removeButton.addEventListener("click", function () {
-    deleteCard(item._id)
-      .catch((err) => {
-        console.log(err)
-      });
-    removeCard(cardElement)
-  })
+  else {
+    removeButton.addEventListener("click", function () {
+      deleteCard(item._id)
+        .catch((err) => {
+          console.log(err)
+        });
+      removeCard(cardElement)
+    })
+  }
 
-  const likeStatus = item.likes.find((elem) => elem._id === usedID)
+  const likeStatus = item.likes.some((elem) => elem._id === userId)
   if (likeStatus) {
     likeButton.classList.add("card__like-button_is-active")
   }
 
   likeButton.addEventListener("click", function () {
-
-    if (!(item.likes.find((elem) => elem._id === usedID))) {
-      putHandleLike(item._id)
-        .then((data) => {
-          handleLikeButton(likeButton)
-          item.likes = data.likes
-          likeAmount.textContent = data.likes.length;
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-
-    else {
-      delHandleLike(item._id)
-        .then((data) => {
-          handleLikeButton(likeButton)
-          item.likes = data.likes
-          likeAmount.textContent = data.likes.length
-        })
-        .catch((err) => {
-          console.log(err)
-        });
-    }
-  });
+    handleLike (item, likeButton, likeAmount)
+  })
 
   cardImage.addEventListener("click", () =>
     handleImagePopup(cardImage)
@@ -72,4 +50,4 @@ function handleLikeButton(but) {
   but.classList.toggle("card__like-button_is-active");
 }
 
-export { addCards, removeCard, handleLikeButton, cardContainer };
+export { createCard, removeCard, handleLikeButton, cardContainer };

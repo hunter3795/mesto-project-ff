@@ -23,7 +23,7 @@ function handleClickMouse() {
       if (evt.target.classList.contains('popup_is-opened')) {
         closePopup(popup)
       }
-      if (evt.target.classList.contains('popup__close')) {
+      else if (evt.target.classList.contains('popup__close')) {
         closePopup(popup)
       }
     })
