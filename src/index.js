@@ -116,7 +116,7 @@ function handleImageFormSubmit(evt) {
     .then((data) => {
       newCard.link = data.link;
       newCard.name = data.name;
-      cardContainer.prepend(createCard(data, userId, removeCard, handleLikeButton, handleImagePopup, deleteCard, handleLike));
+      cardContainer.prepend(createCard(data, userId, removeCard, handleLikeButton, handleImagePopup, handleDeleteCard, handleLike));
     })
     .catch((err) => {
       console.log(err);
@@ -136,7 +136,7 @@ Promise.all([getInitialUsersMe(), getInitialCards()])
     profImage.style.backgroundImage = "url('" + userData.avatar + "')"
     cards.forEach((elem) => 
       cardContainer.append(
-        createCard(elem, userId, removeCard, handleLikeButton, handleImagePopup, deleteCard, handleLike)
+        createCard(elem, userId, removeCard, handleLikeButton, handleImagePopup, handleDeleteCard, handleLike)
       )
     );
   })
@@ -158,4 +158,11 @@ function handleLike (item, button, likeAmount) {
             likeAmount.textContent = data.likes.length;
           })
           .catch(err => console.log(err));
+}
+
+function handleDeleteCard (item) {
+  deleteCard(item._id)
+  .catch((err) => {
+    console.log(err)
+  });
 }

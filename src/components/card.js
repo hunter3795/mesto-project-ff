@@ -1,5 +1,5 @@
 const cardContainer = document.querySelector(".places__list");
-function createCard(item, userId, removeCard, handleLikeButton, handleImagePopup, deleteCard, handleLike) {
+function createCard(item, userId, removeCard, handleLikeButton, handleImagePopup, handleDeleteCard, handleLike) {
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const removeButton = cardElement.querySelector(".card__delete-button");
@@ -18,10 +18,7 @@ function createCard(item, userId, removeCard, handleLikeButton, handleImagePopup
 
   else {
     removeButton.addEventListener("click", function () {
-      deleteCard(item._id)
-        .catch((err) => {
-          console.log(err)
-        });
+      handleDeleteCard(item);
       removeCard(cardElement)
     })
   }
