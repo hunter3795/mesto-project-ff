@@ -51,10 +51,14 @@ function hasInvalidInput(inputList) {
   })
 }
 
+const disableSubmitButton = (button, сonfig) => {
+  button.classList.add(сonfig.inactiveButtonClass); 
+  button.disabled = true; 
+}
+
 function toggleButtonState(inputList, buttonElement, сonfig) {
   if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(сonfig.inactiveButtonClass) //'popup__button_disabled'
-    buttonElement.disabled = true;
+    disableSubmitButton(buttonElement, сonfig);
   }
   else {
     buttonElement.classList.remove(сonfig.inactiveButtonClass) //'popup__button_disabled'
@@ -83,6 +87,5 @@ export function clearValidation(formElement, сonfig) {
   const button = formElement.querySelector(сonfig.submitButtonSelector)
   inputItems.forEach((inputItem) =>
     hideInputError(formElement, inputItem, сonfig))
-  
-  button.classList.add(сonfig.inactiveButtonClass)
+  disableSubmitButton(button, сonfig)
 }

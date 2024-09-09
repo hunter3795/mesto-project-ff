@@ -160,9 +160,10 @@ function handleLike (item, button, likeAmount) {
           .catch(err => console.log(err));
 }
 
-function handleDeleteCard (item) {
+function handleDeleteCard (item, elem) {
   deleteCard(item._id)
   .catch((err) => {
     console.log(err)
   });
+  removeCard(elem)
 }

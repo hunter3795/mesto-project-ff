@@ -18,8 +18,7 @@ function createCard(item, userId, removeCard, handleLikeButton, handleImagePopup
 
   else {
     removeButton.addEventListener("click", function () {
-      handleDeleteCard(item);
-      removeCard(cardElement)
+      handleDeleteCard(item, cardElement);
     })
   }
 
